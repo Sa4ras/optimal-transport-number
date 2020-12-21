@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.optimize import linprog
-import random
 from math import ceil
 
 class MainSolver:

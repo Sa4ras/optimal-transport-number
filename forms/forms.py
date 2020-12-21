@@ -1,8 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import DecimalField, IntegerField, SubmitField, StringField, SelectField
+from wtforms import SubmitField, StringField, SelectField
 from wtforms.validators import DataRequired, Regexp
-
-import re
 
 class UserInputForm(FlaskForm):
 
