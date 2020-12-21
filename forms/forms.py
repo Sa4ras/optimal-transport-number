@@ -8,13 +8,13 @@ class UserInputForm(FlaskForm):
 
     route_len = StringField("Довжина маршруту (км):",
                              validators=[DataRequired("Будь ласка, уведіть дані"),
-                                         Regexp(regex=r'^\d+.\d+$', message='Уведіть число з крапкою або без')])
+                                         Regexp(regex=r'^\d+.*\d+$', message='Уведіть число з крапкою або без')])
 
     number_of_vehicles = StringField("Кількість транспортних засобів:",
                                       validators=[DataRequired("Будь ласка, уведіть дані"),
                                                   Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
-    passenger_capacity = StringField("Середня пасажиромісткість:",
+    passenger_capacity = StringField("Середня пасажиромісткість (люд):",
                                       validators=[DataRequired("Будь ласка, уведіть дані"),
                                                   Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
@@ -26,7 +26,7 @@ class UserInputForm(FlaskForm):
                               validators=[DataRequired("Будь ласка, уведіть дані"),
                                           Regexp(regex=r'^[0-2]?[0-9]\:[0-5][0-9]$', message='Уведіть коректний час')])
 
-    guard_duration = SelectField("Довжина зміни:",
+    guard_duration = SelectField("Тривалість зміни (г):",
                                  choices=[('1', '1'),
                                           ('2', '2'),
                                           ('3', '3'),
@@ -37,15 +37,22 @@ class UserInputForm(FlaskForm):
                                           ('8', '8')],
                                  validators=[DataRequired("Будь ласка, уведіть дані")])
 
-    number_of_guards = StringField("Кількість змін:",
-                                    validators=[DataRequired("Будь ласка, уведіть дані"),
-                                                Regexp(regex=r'^\d$', message='Уведіть число без крапки')])
+    number_of_guards = SelectField("Кількість змін:",
+                                   choices=[('1', '1'),
+                                            ('2', '2'),
+                                            ('3', '3'),
+                                            ('4', '4'),
+                                            ('5', '5'),
+                                            ('6', '6'),
+                                            ('7', '7'),
+                                            ('8', '8')],
+                                    validators=[DataRequired("Будь ласка, уведіть дані")])
 
-    area_population = StringField("Населення міста:",
+    area_population = StringField("Населення міста (люд):",
                                    validators=[DataRequired("Будь ласка, уведіть дані"),
                                                Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
-    area_square = StringField("Площа міста: ",
+    area_square = StringField("Площа міста (км2): ",
                                validators=[DataRequired("Будь ласка, уведіть дані"),
                                            Regexp(regex=r'^\d+.\d+$', message='Уведіть коректні дані')])
 

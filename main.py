@@ -23,7 +23,20 @@ def calc():
                             int(user_input['number_of_guards']),
                             int(user_input['area_population']),
                             float(user_input['area_square'])).optimization_task()
-        print('result:', result)
+
+        depart_hours = result[0]
+        optimal_transport_number = result[1]
+        departured_quantity = result[3]
+        if result[2]== 0 and result[4] == True:
+            flash(f"""Для Вас має сенс покращити обслуговування маршруту!\
+                      Мінімальна потрібна кількість т-з: {optimal_transport_number}\
+                      Рекомендовані початки рейсів та кількість відбутих т-з у цей час: 
+                      {dict(zip(depart_hours,departured_quantity))}""", 'success')
+        else:
+            flash(f"""Для Вас є сенс збільшити автопарк!\
+                      Мінімальна потрібна кількість т-з: {optimal_transport_number}\
+                      Рекомендовані початки рейсів та кількість відбутих т-з у цей час: 
+                      {dict(zip(depart_hours,departured_quantity))}""", 'danger')
 
     return render_template('calc.html', form=form)
 

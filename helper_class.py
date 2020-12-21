@@ -15,7 +15,7 @@ class MainSolver:
         self.first_guard = first_guard
         self.guard_duration = guard_duration
         self.number_of_guards = number_of_guards
-        self.density = area_square/area_population
+        self.density = area_population/area_square
 
     def time_converter(self, unformatted_time):
         hours = int(unformatted_time[:-3])
@@ -23,7 +23,8 @@ class MainSolver:
         return hours*60 + minutes
 
     def A(self, Qmax, to, q, L):
-        return ceil(Qmax*to*round(random.uniform(0, L), 2)/L/q)
+        print("Qmax: ", Qmax)
+        return ceil(Qmax*to*L/L/q/2)
 
     def time_intervals(self, first_g, duration, num):
         first_g = self.time_converter(first_g)
@@ -62,29 +63,34 @@ class MainSolver:
         c = [1 for ci in range(len(DepartHours))]
         A = [[] for ai in range(len(DepartHours))]
         counter = 0
-        print('DepartHours:', DepartHours)
-        print('c:', c)
-        print('A:', A)
         for i in range(len(DepartHours)):
             A[i] = [0 for z in range(len(DepartHours))]
             while counter < len(DepartHours):
-                print(A[i][counter])
                 A[i][counter] = 1
                 A[i][counter - 1] = 1
                 break
             counter += 1
+        print('DepartHours:', DepartHours)
+        print('c:', c)
         print('A:', A)
+        print('bounds:', bounds)
         c = np.array(c)
         A_ub = -np.array(A)
         b_ub = -np.array(bounds)
-        result = linprog(c, A_ub=A_ub, b_ub=b_ub, method='simplex')
-        return result
+        solution = linprog(c, A_ub=A_ub, b_ub=b_ub, method='simplex')
+        print(solution)
+        return ["%d:%02d" % (int(i/60), i%60) for i in DepartHours], \
+               abs(ceil(solution['fun'])), \
+               solution['status'], \
+               [ceil(abs(i)) for i in solution['x']], \
+               self.number_of_vehicles > abs(ceil(solution['fun']))
     """A = [[1, 0, 0, 0, 0, 1], [1, 1, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1]]
         b = [4, 8, 10, 7, 12, 4]
         c = np.array([1,1,1,1,1,1])
         A_ub = -np.array(A)
         b_ub = -np.array(b)
-        print("b_ub:", b_ub)"""
+        print("b_ub:", b_ub)
+        solution = linprog(c, A_ub=A_ub, b_ub=b_ub, method='simplex')"""
 
 
 
