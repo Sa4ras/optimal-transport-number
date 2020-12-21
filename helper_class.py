@@ -13,7 +13,7 @@ class MainSolver:
         self.passenger_capacity = passenger_capacity
         self.route_time = route_time
         self.first_guard = first_guard
-        self.guard_duration = int(guard_duration)
+        self.guard_duration = guard_duration
         self.number_of_guards = number_of_guards
         self.density = area_square/area_population
 
@@ -29,7 +29,7 @@ class MainSolver:
         first_g = self.time_converter(first_g)
         output_time_intervals = [first_g]
         for i in range(num-1):
-            output_time_intervals.append(output_time_intervals[i] + duration/2)
+            output_time_intervals.append(output_time_intervals[i] + duration*60/2)
         return output_time_intervals
 
     def minimization_bounds(self, time_intervals_list, population_density, to, q, L):
@@ -56,25 +56,36 @@ class MainSolver:
         DepartHours = self.time_intervals(self.first_guard, self.guard_duration, self.number_of_guards)
         bounds = self.minimization_bounds(DepartHours,
                                           self.density,
-                                          self.route_time,
+                                          self.time_converter(self.route_time)/60,
                                           self.passenger_capacity,
                                           self.route_len)
         c = [1 for ci in range(len(DepartHours))]
         A = [[] for ai in range(len(DepartHours))]
         counter = 0
+        print('DepartHours:', DepartHours)
+        print('c:', c)
+        print('A:', A)
         for i in range(len(DepartHours)):
-            for j in range(len(DepartHours)):
-                A = [0 for z in range(len(DepartHours))]
-                while counter < len(DepartHours):
-                    A[i][counter] = 1
-                    A[i][counter - 1] = 1
-                    break
-                counter += 1
+            A[i] = [0 for z in range(len(DepartHours))]
+            while counter < len(DepartHours):
+                print(A[i][counter])
+                A[i][counter] = 1
+                A[i][counter - 1] = 1
+                break
+            counter += 1
+        print('A:', A)
         c = np.array(c)
         A_ub = -np.array(A)
         b_ub = -np.array(bounds)
-        result = linprog(c, A_ub=A_ub, b_ub=b_ub)
+        result = linprog(c, A_ub=A_ub, b_ub=b_ub, method='simplex')
         return result
+    """A = [[1, 0, 0, 0, 0, 1], [1, 1, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 1, 0], [0, 0, 0, 0, 1, 1]]
+        b = [4, 8, 10, 7, 12, 4]
+        c = np.array([1,1,1,1,1,1])
+        A_ub = -np.array(A)
+        b_ub = -np.array(b)
+        print("b_ub:", b_ub)"""
+
 
 
 

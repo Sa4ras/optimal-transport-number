@@ -12,17 +12,19 @@ def welcome():
 @app.route('/calculus', methods=["GET", "POST"])
 def calc():
     form = UserInputForm()
-    if request.method == 'POST' and form.validate():
-        result = MainSolver(form.route_len,
-                            form.number_of_vehicles,
-                            form.passenger_capacity,
-                            form.route_time,
-                            form.first_guard,
-                            form.guard_duration,
-                            form.number_of_guards,
-                            form.area_population,
-                            form.area_square).optimization_task()
-        print(result)
+    if request.method == 'POST' and form.validate() and form.validate_on_submit():
+        user_input = request.form.to_dict()
+        result = MainSolver(float(user_input['route_len']),
+                            int(user_input['number_of_vehicles']),
+                            int(user_input['passenger_capacity']),
+                            str(user_input['route_time']),
+                            str(user_input['first_guard']),
+                            int(user_input['guard_duration']),
+                            int(user_input['number_of_guards']),
+                            int(user_input['area_population']),
+                            float(user_input['area_square'])).optimization_task()
+        print('result:', result)
+
     return render_template('calc.html', form=form)
 
 if __name__ == '__main__':

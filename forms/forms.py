@@ -6,25 +6,25 @@ import re
 
 class UserInputForm(FlaskForm):
 
-    route_len = DecimalField("Довжина маршруту (км):",
+    route_len = StringField("Довжина маршруту (км):",
                              validators=[DataRequired("Будь ласка, уведіть дані"),
-                                         Regexp('^\d+.\d+$', message='Уведіть число з крапкою або без')])
+                                         Regexp(regex=r'^\d+.\d+$', message='Уведіть число з крапкою або без')])
 
-    number_of_vehicles = IntegerField("Кількість транспортних засобів:",
+    number_of_vehicles = StringField("Кількість транспортних засобів:",
                                       validators=[DataRequired("Будь ласка, уведіть дані"),
-                                                  Regexp('^\d+$', message='Уведіть число без крапки')])
+                                                  Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
-    passenger_capacity = IntegerField("Середня пасажиромісткість:",
+    passenger_capacity = StringField("Середня пасажиромісткість:",
                                       validators=[DataRequired("Будь ласка, уведіть дані"),
-                                                  Regexp('^\d+$', message='Уведіть число без крапки')])
+                                                  Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
     route_time = StringField("Час повного обороту (гг:хх):",
                              validators=[DataRequired("Будь ласка, уведіть дані"),
-                                         Regexp('[0-2]?[0-9]\:[0-5][0-9]', message='Уведіть коректний час')])
+                                         Regexp(regex=r'[0-2]?[0-9]\:[0-5][0-9]$', message='Уведіть коректний час')])
 
     first_guard = StringField("Початок першої зміни (гг:хх):",
                               validators=[DataRequired("Будь ласка, уведіть дані"),
-                                          Regexp('^[0-2]?[0-9]\:[0-5][0-9]$', message='Уведіть коректний час')])
+                                          Regexp(regex=r'^[0-2]?[0-9]\:[0-5][0-9]$', message='Уведіть коректний час')])
 
     guard_duration = SelectField("Довжина зміни:",
                                  choices=[('1', '1'),
@@ -37,16 +37,16 @@ class UserInputForm(FlaskForm):
                                           ('8', '8')],
                                  validators=[DataRequired("Будь ласка, уведіть дані")])
 
-    number_of_guards = IntegerField("Кількість змін:",
+    number_of_guards = StringField("Кількість змін:",
                                     validators=[DataRequired("Будь ласка, уведіть дані"),
-                                                Regexp('^\d$', message='Уведіть число без крапки')])
+                                                Regexp(regex=r'^\d$', message='Уведіть число без крапки')])
 
-    area_population = IntegerField("Населення міста:",
+    area_population = StringField("Населення міста:",
                                    validators=[DataRequired("Будь ласка, уведіть дані"),
-                                               Regexp('^\d+$', message='Уведіть число без крапки')])
+                                               Regexp(regex=r'^\d+$', message='Уведіть число без крапки')])
 
-    area_square = DecimalField("Площа міста: ",
+    area_square = StringField("Площа міста: ",
                                validators=[DataRequired("Будь ласка, уведіть дані"),
-                                           Regexp('^\d+.\d+$', message='Уведіть коректні дані')])
+                                           Regexp(regex=r'^\d+.\d+$', message='Уведіть коректні дані')])
 
     submit = SubmitField("Результат!")
