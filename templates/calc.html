@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "welcome.html" %}
+{% block content %}
 
-</body>
-</html>
+<div class = "content-section w-50 p-3 align-center">
+    <form method = "POST" action = "">
+        <fieldset class = "form-group">
+            <legend class = "border-bottom mb-4">Для отримання результату введіть наступну інформацію:</legend>
+            {{ form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != 'hidden' and field.type != 'SubmitField' %}
+                <div class = "form-group">
+                  {{ field.label(class = "form-control-label") }}
+                    {% if not field %}
+                         {{ field(class = "form-control form-control-lg is-invalid") }}
+                            <div class = "invalid-feedback">
+                                {% for errors in field.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                    {% else %}
+                        {{ field(class = "form-control form-control=lg") }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+        <div class = "form-group">
+            {{ form.submit(class = "btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
